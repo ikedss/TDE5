@@ -15,7 +15,7 @@ def main():
 
     n_veretices = int(input("numero de vertices: "))
     n_arestas = int(input("numero de arestas: "))
-    #derecionado = input("é derecionado?: ")
+    derecionado = str(input("é derecionado? (s/n): "))
 
     for i in range(n_veretices):
         grafo.adiciona_vertice(random.choice(nomes))
@@ -25,10 +25,12 @@ def main():
     for i in range(n_arestas):
         vertice = grafo.nome_vertice()
         grau = grafo.list_grau()
-        grafo.adiciona_aresta(random.choice(random.choices(vertice, weights=grau)), random.choice(vertice), random.randint(1, 100))
+        if derecionado == "sim":
+            grafo.adiciona_aresta(random.choice(random.choices(vertice, weights=grau)), random.choice(vertice), random.randint(1, 100))
+        else:
+            grafo.adiciona_aresta_n_direcionado(random.choice(random.choices(vertice, weights=grau)), random.choice(vertice), random.randint(1, 100))
 
     grafo.imprime_lista_adjacencias()
-
 
 if __name__ == '__main__':
     main()
