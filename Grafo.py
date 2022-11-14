@@ -222,3 +222,16 @@ class GRAFO:
                         fila.append(x[0])
             del fila[0]
         return visitados
+       
+    def pajek(self):
+        grafo = open("grafo.net", "w")
+        n = 1
+        grafo.write("*vertices" + " " + str(self.numero_vertices()) + "\n")
+        for vertice in self.grafo:
+            tupla = (n, vertice)
+            grafo.write(str(n) + " " + vertice + "\n")
+            n += 1
+        for vertice in tupla:
+            self.tem_aresta()
+        grafo.close()
+        return 0
