@@ -2,8 +2,9 @@ import math
 
 
 class GRAFO:
-    def __init__(self):
+    def __init__(self, direcionado):
         self.grafo = {}
+        self.direcionado = direcionado
 
     def adiciona_vertice(self, nome_vertice):
         if nome_vertice in self.grafo:
