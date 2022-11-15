@@ -2,21 +2,18 @@ import math
 
 
 class GRAFO:
-    def __init__(self, direcionado):
+    def __init__(self):
         self.grafo = {}
-        self.direcionado = direcionado
 
     def adiciona_vertice(self, nome_vertice):
         if nome_vertice in self.grafo:
-            print(f"Vertice {nome_vertice} ja existe")
+            return False
         else:
             self.grafo[nome_vertice] = []
 
     def adiciona_aresta(self, vertice1, vertice2, peso):
         if self.tem_aresta(vertice1, vertice2):
-            peso_ = self.peso(vertice1, vertice2)
-            self.remove_aresta(vertice1, vertice2)
-            self.grafo[vertice1].append([vertice2, peso_ + 1])
+            return False
         else:
             self.grafo[vertice1].append([vertice2, peso])
 
