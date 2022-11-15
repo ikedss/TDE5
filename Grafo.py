@@ -237,11 +237,10 @@ class GRAFO:
         for vertice in self.grafo:
             vertice_1 = vertice
             vertice_teste = 1
-            for vertice in self.grafo:
-                if self.tem_aresta(vertice_1, vertice):
-                    print(vertice_1 + vertice)
-                    grafo.write(str(vertice_atual) + " " + str(vertice_teste) + "\n")
-                vertice_teste += 1
-            vertice_atual += 1
+            if self.tem_aresta(vertice_1, vertice):
+                print(vertice_1 + vertice)
+                grafo.write(str(vertice_atual) + " " + str(vertice_teste) + "\n")
+            vertice_teste += 1
+        vertice_atual += 1
         grafo.close()
         return 0
