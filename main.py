@@ -79,11 +79,35 @@ class Grafo_Random:
         else:
             print("Parametro invalido")
 
+    def Kahn_Algorithm(self):
+        lista = []
+        total = list(self.grafo.grafo.keys())
+        grau_zerado = [0] * (self.grafo.numero_vertices())
+        for vertice in total:
+            grau_entrada = self.grafo.grau_entrada(vertice)
+            numero_de_vertices = grau_entrada
+            if numero_de_vertices == 0:
+                lista.append(vertice)
+                self.grafo.remove_vertice(vertice)
+
+        sorted_list = []
+        while lista:
+            vertice_lista = lista.pop()
+            sorted_list.append(vertice_lista)
+            for vertice_vizinho in self.grafo.grafo.get(vertice_lista, []):
+                grau_zerado[vertice_vizinho] -= 1
+                if grau_zerado[vertice_vizinho] == 0:
+                    lista.append(vertice_vizinho)
+
+        if len(sorted_list) != len(grau_zerado):
+            return "Grafo tem ciclos"
+        else:
+            return sorted_list
+
 
 def main():
     grafo_ramdom = Grafo_Random(50, 50, True)
-    print(grafo_ramdom.grafo.busca_profundidade("LostMatheusGT"))
-    #grafo_ramdom.transpor_grafo()
+    print(grafo_ramdom.Kahn_Algorithm())
 
 
 if __name__ == '__main__':
