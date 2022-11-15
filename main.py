@@ -65,8 +65,13 @@ class Grafo_Random:
             return False
 
     def transpor_grafo(self):
-        for value in self.grafo.grafo.values():
-            print(value)
+        for chave, valores in self.grafo.grafo.items():
+            if len(valores) > 0:
+                for valor in valores:
+                    peso = self.grafo.peso(chave, valor[0])
+                    self.grafo.remove_aresta(chave, valor[0])
+                    self.grafo.adiciona_aresta(valor[0], chave, peso)
+        print(self.grafo.imprime_lista_adjacencias())
 
     def dag(self, grafo):
         if grafo.direcionado == True:
