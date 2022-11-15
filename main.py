@@ -82,7 +82,8 @@ class Grafo_Random:
 
 def main():
     grafo_ramdom = Grafo_Random(50, 50, True)
-    grafo_ramdom.transpor_grafo()
+    print(grafo_ramdom.grafo.busca_profundidade("LostMatheusGT"))
+    #grafo_ramdom.transpor_grafo()
 
 
 if __name__ == '__main__':

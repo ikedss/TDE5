@@ -32,6 +32,10 @@ class GRAFO:
             print(f"Vertice {vertice} não existe")
         else:
             del self.grafo[vertice]
+            for chave, valores in self.grafo.items():
+                for valor in valores:
+                    if valor[0] == vertice:
+                        self.remove_aresta(chave, vertice)
 
     def tem_aresta(self, vertice1, vertice2):
         if vertice1 not in self.grafo or vertice2 not in self.grafo:
