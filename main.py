@@ -23,12 +23,12 @@ class Grafo_Random:
 
         lista_vertices = self.grafo.nome_vertice()
         self.grafo.adiciona_aresta(random.choice(self.grafo.nome_vertice()),
-                              random.choice(self.grafo.nome_vertice()),
-                              random.randint(1, 100))
+                                   random.choice(self.grafo.nome_vertice()),
+                                   random.randint(1, 100))
 
         nu_arestas = self.n_arestas
 
-        if self.direcionado == False:
+        if not self.direcionado:
             nu_arestas = nu_arestas * 2
 
         if type(self.direcionado) == bool:
@@ -37,21 +37,21 @@ class Grafo_Random:
                 nome_aleatorio_1 = random.choice(random.choices(lista_vertices, weights=lista_graus))
                 nome_aleatorio_2 = random.choice(lista_vertices)
                 n_rand = random.randint(1, 100)
-                if self.direcionado == True:
+                if self.direcionado:
                     if not self.grafo.tem_aresta(nome_aleatorio_1, nome_aleatorio_2):
                         self.grafo.adiciona_aresta(nome_aleatorio_1,
-                                              nome_aleatorio_2,
-                                              n_rand)
+                                                   nome_aleatorio_2,
+                                                   n_rand)
 
                 else:
                     if not self.grafo.tem_aresta(nome_aleatorio_1, nome_aleatorio_2):
                         self.grafo.adiciona_aresta(nome_aleatorio_1,
-                                              nome_aleatorio_2,
-                                              n_rand)
+                                                   nome_aleatorio_2,
+                                                   n_rand)
 
                         self.grafo.adiciona_aresta(nome_aleatorio_2,
-                                              nome_aleatorio_1,
-                                              n_rand)
+                                                   nome_aleatorio_1,
+                                                   n_rand)
 
         else:
             print("Direcionado é bool")
@@ -74,7 +74,7 @@ class Grafo_Random:
         print(self.grafo.imprime_lista_adjacencias())
 
     def dag(self, grafo):
-        if grafo.direcionado == True:
+        if grafo.direcionado:
             print("oi")
         else:
             print("Parametro invalido")
@@ -107,6 +107,7 @@ class Grafo_Random:
 
 def main():
     grafo_ramdom = Grafo_Random(50, 50, True)
+    grafo_ramdom.dag(grafo_ramdom)
     print(grafo_ramdom.Kahn_Algorithm())
 
 
