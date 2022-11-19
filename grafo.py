@@ -1,5 +1,5 @@
 import math
-
+import random
 
 class GRAFO:
     def __init__(self, direcionado):
@@ -224,11 +224,11 @@ class GRAFO:
                 acc = max(init_dic.values())
         return acc
 
-    def busca_profundidade(self, vertice, fim):
+    def busca_profundidade(self, vertice):
         visitados = []
         pilha = []
         pilha.append(vertice)
-        while fim not in visitados:
+        while pilha:
             s = pilha.pop()
             if s not in visitados:
                 visitados.append(s)

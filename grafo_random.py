@@ -149,14 +149,14 @@ class Grafo_Random:
                 new_grafo.adiciona_aresta(dic_names[name1], dic_names[name2], 0)
             acc += 1
         txt.close()
-        new_grafo.imprime_lista_adjacencias()
+        return new_grafo
 
     def transformador_conexo(self):
         if self.direcionado:
             print("grafo é direcionado")
         else:
             for vertice in self.grafo.grafo:
-                if self.grafo.grau(vertice) == 0:
+                while self.grafo.grau(vertice) == 0:
                     self.grafo.adiciona_aresta_n_direcionado(vertice,
                                                              random.choice(self.grafo.nome_vertice()),
                                                              random.randint(0, 100))
@@ -174,36 +174,34 @@ class Grafo_Random:
         return plt.show()
 
     def numero_comp_ndirecionado(self):
-        vertices = self.grafo.nome_vertice()
-        visitados = []
-        acc = 0
-        for i in vertices:
-            cond = True
-            for i1 in self.grafo.busca_largura(i):
-                if i1 in visitados:
-                    cond = False
-                else:
-                    visitados.append(i1)
-            if cond == True:
-                acc += 1
-        print(acc)
+        if self.direcionado == False:
+            vertices = self.grafo.nome_vertice()
+            visitados = []
+            acc = 0
+            for i in vertices:
+                cond = True
+                for i1 in self.grafo.busca_largura(i):
+                    if i1 in visitados:
+                        cond = False
+                    else:
+                        visitados.append(i1)
+                if cond == True:
+                    acc += 1
+            return acc
+        else:
+            return "Precisa ser não direcional"
 
+    def arvore_minima_ndirecionado(self):
+        if self.numero_comp_ndirecionado() == 1:
+            grafo1 = gf.GRAFO(False)
+            lista_caminho = self.grafo.busca_profundidade(0)
+            for i in lista_caminho:
+                grafo1.adiciona_vertice(i)
+            for i in range(len(lista_caminho)-1):
+                grafo1.adiciona_aresta(lista_caminho[i], lista_caminho[i+1], 0)
+                grafo1.adiciona_aresta(lista_caminho[i + 1], lista_caminho[i], 0)
+            return grafo1
+        else:
+            print("Grafo não é conexo ou direcional")
+            return
 
-def main():
-    grafo_random = Grafo_Random(600, 400, False)
-    grafo_random.numero_comp_ndirecionado()
-    # grafo_random.plot_caminho_min_hist()
-    # print(grafo_random.grafo.numero_arrestas())
-    # grafo_random.grafo.imprime_lista_adjacencias()
-    # scc1 = scc.SCC(grafo_random.grafo)
-    # scc1.printSCCs()
-    # grafo_random_copy = copy.deepcopy(grafo_random)
-    # grafo_random_copy.dag()
-    # grafo_random.pajek()
-    # grafo_random.lerpajek()
-    # grafo_random.transformador_conexo()
-    # grafo_random.plot_grau_hist()
-
-
-if __name__ == '__main__':
-    main()

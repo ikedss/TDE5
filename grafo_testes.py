@@ -1,7 +1,7 @@
 import grafo
 
 def grafo_teste1():
-    grafo_text = grafo.GRAFO()
+    grafo_text = grafo.GRAFO(True)
     grafo_text.adiciona_vertice("A")
     grafo_text.adiciona_vertice("B")
     grafo_text.adiciona_vertice("C")
