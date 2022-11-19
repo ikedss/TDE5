@@ -200,8 +200,16 @@ class Grafo_Random:
             for i in range(len(lista_caminho)-1):
                 grafo1.adiciona_aresta(lista_caminho[i], lista_caminho[i+1], 0)
                 grafo1.adiciona_aresta(lista_caminho[i + 1], lista_caminho[i], 0)
-            return grafo1
+            self.grafo = grafo1
         else:
             print("Grafo não é conexo ou direcional")
             return
+
+    def imprime_lista_adjacencias(self):
+        aresta = ""
+        for key, value in self.grafo.grafo.items():
+            for i in value:
+                aresta += "["+self.dic_nomes[i[0]]+f", {i[1]}]" + " -> "
+            print(f"{self.dic_nomes[key]} : {aresta}")
+            aresta = ""
 
