@@ -17,6 +17,13 @@ class GRAFO:
         else:
             self.grafo[vertice1].append([vertice2, peso])
 
+    def adiciona_aresta_n_direcionado(self, vertice1, vertice2, peso):
+        if self.tem_aresta(vertice1, vertice2):
+            return False
+        else:
+            self.grafo[vertice1].append([vertice2, peso])
+            self.grafo[vertice2].append([vertice1, peso])
+
     def remove_aresta(self, vertice1, vertice2):
         nova_lista = []
         if self.tem_aresta(vertice1, vertice2):
@@ -26,6 +33,15 @@ class GRAFO:
             self.grafo[vertice1] = nova_lista
         else:
             print(f"Aresta entre {vertice1} -> {vertice2} não existe")
+
+    def remove_aresta_vertice(self, vertice):
+        if vertice not in self.grafo:
+            print(f"Vertice {vertice} não existe")
+        else:
+            for chave, valores in self.grafo.items():
+                for valor in valores:
+                    if valor[0] == vertice:
+                        self.remove_aresta(chave, vertice)
 
     def remove_vertice(self, vertice):
         if vertice not in self.grafo:
@@ -51,21 +67,6 @@ class GRAFO:
                 if i[0] == vertice2:
                     return i[1]
         return f"Aresta entre {vertice1} -> {vertice2} não existe"
-
-    def grau(self, vertice):
-        acc = 0
-        if vertice in self.grafo:
-            for i in self.grafo.keys():
-                if vertice in [x[0] for x in self.grafo[i]] and i != vertice:
-                    acc += 1
-            return len(self.grafo[vertice]) + acc
-        return f"Vertice {vertice} não existe"
-
-    def list_grau(self):
-        lista = []
-        for vertice in self.grafo.keys():
-            lista.append(self.grau(vertice))
-        return lista
 
     def verificador_euleriano(self):
         eulerian = True
@@ -95,6 +96,38 @@ class GRAFO:
     def nome_vertice(self):
         return list(self.grafo.keys())
 
+    def grau(self, vertice):
+        acc = 0
+        if vertice in self.grafo:
+            for i in self.grafo.keys():
+                if vertice in [x[0] for x in self.grafo[i]] and i != vertice:
+                    acc += 1
+            return len(self.grafo[vertice]) + acc
+        return f"Vertice {vertice} não existe"
+
+    def maior_grau(self):
+        listagraumax = []
+        for vertice in self.grafo:
+            numero_de_vertices = self.grau(vertice)
+            listagraumax.append([numero_de_vertices, vertice])
+        return sorted(listagraumax, key=lambda x: x[0], reverse=True)[:1]
+
+    def maior_grau_sem_n(self):
+        lista = []
+        for i in self.maior_grau():
+            for j in i:
+                if j in range(self.numero_arrestas()):
+                    del j
+                else:
+                    lista.append(j)
+        return lista
+
+    def list_grau(self):
+        lista = []
+        for vertice in self.grafo.keys():
+            lista.append(self.grau(vertice))
+        return lista
+
     def grau_entrada(self, keys):
         listaentrada = []
         for vertice in self.grafo:
@@ -108,14 +141,14 @@ class GRAFO:
         for vertice in self.grafo.keys():
             listaentrada[vertice] = len(self.grafo[vertice])
         listaentrada = sorted(listaentrada.items(), key=lambda x: x[1], reverse=True)
-        return listaentrada[:20]
+        return listaentrada[:1]
 
     def grau_entrada_max(self):
         listaentradamax = []
         for vertice in self.grafo:
             numero_de_vertices = self.grau_entrada(vertice)
             listaentradamax.append([numero_de_vertices, vertice])
-        return sorted(listaentradamax, key=lambda x: x[0], reverse=True)[:20]
+        return sorted(listaentradamax, key=lambda x: x[0], reverse=True)[:1]
 
     def x_arestas(self, vertice, D):
         lista_vertices = []
@@ -226,21 +259,77 @@ class GRAFO:
         return visitados
 
     def pajek(self):
-        grafo = open("grafo.net", "w")
+        grafoDotNet = open("grafo.net", "w")
         n = 1
-        grafo.write("*vertices" + " " + str(self.numero_vertices()) + "\n")
-        for vertice in self.grafo:
-            grafo.write(str(n) + " " + vertice + "\n")
+        grafoDotNet.write("*vertices" + " " + str(self.grafo.numero_vertices()) + "\n")
+        for vertice in self.grafo.grafo:
+            grafoDotNet.write(str(n) + " " + vertice + "\n")
             n += 1
-
         vertice_atual = 1
-        for vertice in self.grafo:
+
+        if self.direcionado:
+            grafoDotNet.write("*arcs \n")
+        else:
+            grafoDotNet.write("*edges \n")
+
+        for vertice in self.grafo.grafo:
             vertice_1 = vertice
             vertice_teste = 1
-            for vertice in self.grafo:
-                if self.tem_aresta(vertice_1, vertice):
-                    grafo.write(str(vertice_atual) + " " + str(vertice_teste) + "\n")
+            for vertice in self.grafo.grafo:
+                if self.grafo.tem_aresta(vertice_1, vertice):
+                    grafoDotNet.write(str(vertice_atual) + " " + str(vertice_teste) + "\n")
                 vertice_teste += 1
             vertice_atual += 1
-        grafo.close()
-        return 0
+        grafoDotNet.close()
+
+    def lerpajek(self):
+        nome_arestas = []
+        id_arestas = []
+        lst_conec = []
+        lst_conec1 = []
+        conec = True
+        with open("grafo.net") as f:
+            arquivo = f.readlines()
+            for linha in arquivo:
+                data = linha.split()
+                if data[0] != "*vertices" and data[0] != "*arcs" and data[0] != "*edges":
+                    if conec:
+                        print(data[1])
+                        self.grafo.adiciona_vertice(data[1])
+                        nome_arestas.append(data[1])
+                        id_arestas.append(data[0])
+                    else:
+                        lst_conec.append(data[0])
+                        lst_conec1.append(data[1])
+
+                if data[0] == "*arcs" and "*edges":
+                    conec = False
+                    direcionado = data[0]
+
+        lst_vertices = list(zip(id_arestas, nome_arestas))
+        lst_arestas = list(zip(lst_conec, lst_conec1))
+
+        lst_verticeA = []
+        lst_verticeB = []
+
+        for arestas in lst_arestas:
+            vertice_atual = arestas[0]
+            vertice_conectado = arestas[1]
+            for vertice in lst_vertices:
+                if vertice[0] == vertice_atual:
+                    lst_verticeA.append(vertice[1])
+                if vertice[0] == vertice_conectado:
+                    lst_verticeB.append(vertice[1])
+
+        lst_ligada = list(zip(lst_verticeA, lst_verticeB))
+
+        if direcionado == "*arcs":
+            for item in lst_ligada:
+                self.grafo.adiciona_aresta(item[0], item[1], 0)
+        else:
+            for item in lst_ligada:
+                self.grafo.adiciona_aresta(item[0], item[1], 0)
+                self.grafo.adiciona_aresta(item[1], item[0], 0)
+
+        self.grafo.imprime_lista_adjacencias()
+        f.close()
