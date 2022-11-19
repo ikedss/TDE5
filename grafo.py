@@ -237,11 +237,18 @@ class GRAFO:
                         pilha.append(x[0])
         return visitados
 
-    def busca_largura(self, vertice, fim):
+    def arestas_vertice(self, vertice):
+        vertices = self.grafo[vertice]
+        if len(vertices) > 0:
+            return [i[0] for i in self.grafo[vertice]]
+        else:
+            return []
+
+    def busca_largura(self, vertice):
         visitados = []
         fila = []
         fila.append(vertice)
-        while fim not in visitados:
+        while fila:
             if fila[0] not in visitados:
                 visitados.append(fila[0])
                 for x in self.grafo[fila[0]][::-1]:

@@ -38,9 +38,7 @@ class SCC:
                 self.DFSUtil(i[0], visited, grafo)
 
     def fillOrder(self, v, visited, stack):
-        # Mark the current node as visited
         visited[v] = True
-        # Recur for all the vertices adjacent to this vertex
         for i in self.grafo.grafo[v]:
             if visited[i[0]] == False:
                 self.fillOrder(i[0], visited, stack)
@@ -49,22 +47,16 @@ class SCC:
     def printSCCs(self):
 
         stack = []
-        # Mark all the vertices as not visited (For first DFS)
 
         visited = self.dic_visitados
-        # Fill vertices in stack according to their finishing
-        # times
+
         for i in self.grafo.grafo.keys():
             if visited[i] == False:
                 self.fillOrder(i, visited, stack)
 
-            # Create a reversed graph
         gf = self.transpor_grafo()
-
-        # Mark all the vertices as not visited (For second DFS)
         visited = self.criar_dicionario_vistados()
 
-        # Now process all vertices in order defined by Stack
         while stack:
             i = stack.pop()
             if visited[i] == False:

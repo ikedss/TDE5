@@ -1,6 +1,6 @@
 import grafo
 
-def grafo_texte1():
+def grafo_teste1():
     grafo_text = grafo.GRAFO()
     grafo_text.adiciona_vertice("A")
     grafo_text.adiciona_vertice("B")
@@ -24,4 +24,19 @@ def grafo_texte1():
     grafo_text.adiciona_aresta("F", "G", 1)
     grafo_text.adiciona_aresta("G", "F", 1)
     grafo_text.adiciona_aresta("G", "H", 1)
+    return grafo_text
+
+def grafo_teste2():
+    grafo_text = grafo.GRAFO(False)
+    grafo_text.adiciona_vertice("0")
+    grafo_text.adiciona_vertice("1")
+    grafo_text.adiciona_vertice("2")
+    grafo_text.adiciona_vertice("3")
+    grafo_text.adiciona_vertice("4")
+    grafo_text.adiciona_vertice("5")
+
+    grafo_text.adiciona_aresta("0", "1", 1)
+    grafo_text.adiciona_aresta("0", "2", 1)
+    grafo_text.adiciona_aresta("1", "2", 1)
+    grafo_text.adiciona_aresta("4", "5", 1)
     return grafo_text

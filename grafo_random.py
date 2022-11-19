@@ -1,9 +1,6 @@
-import grafo
 import grafo as gf
 import numpy as np
 import random
-import copy
-import scc
 import matplotlib.pyplot as plt
 
 
@@ -42,7 +39,6 @@ class Grafo_Random:
                     w = np.random.randint(100)
                     self.grafo.adiciona_aresta(v1, v2, w)
                     self.grafo.adiciona_aresta(v2, v1, w)
-
 
     def matrix_para_grafo_direcinado(self, n_vertices, n_arestas):
         matrix = self.gerar_matrix_random(n_vertices, n_arestas)
@@ -138,7 +134,6 @@ class Grafo_Random:
         grafoDotNet.close()
 
     def lerpajek(self):
-        print("GUEGOU")
         new_grafo = gf.GRAFO(self.direcionado)
         txt = open("grafo.net")
         lines = txt.read().splitlines()
@@ -178,24 +173,36 @@ class Grafo_Random:
         plt.xlabel("Grau")
         return plt.show()
 
+    def numero_comp_ndirecionado(self):
+        vertices = self.grafo.nome_vertice()
+        visitados = []
+        acc = 0
+        for i in vertices:
+            cond = True
+            for i1 in self.grafo.busca_largura(i):
+                if i1 in visitados:
+                    cond = False
+                else:
+                    visitados.append(i1)
+            if cond == True:
+                acc += 1
+        print(acc)
 
 
 def main():
-    grafo_random = Grafo_Random(1000, 1500, True)
-    grafo_random.plot_caminho_min_hist()
-    #print(grafo_random.grafo.numero_arrestas())
-    #grafo_random.grafo.imprime_lista_adjacencias()
-    #scc1 = scc.SCC(grafo_random.grafo)
-    #scc1.printSCCs()
-    #grafo_random_copy = copy.deepcopy(grafo_random)
-    #grafo_random_copy.dag()
-    #grafo_random.pajek()
-    #grafo_random.lerpajek()
-    #grafo_random.transformador_conexo()
-    #grafo_random.plot_grau_hist()
-
-
-
+    grafo_random = Grafo_Random(600, 400, False)
+    grafo_random.numero_comp_ndirecionado()
+    # grafo_random.plot_caminho_min_hist()
+    # print(grafo_random.grafo.numero_arrestas())
+    # grafo_random.grafo.imprime_lista_adjacencias()
+    # scc1 = scc.SCC(grafo_random.grafo)
+    # scc1.printSCCs()
+    # grafo_random_copy = copy.deepcopy(grafo_random)
+    # grafo_random_copy.dag()
+    # grafo_random.pajek()
+    # grafo_random.lerpajek()
+    # grafo_random.transformador_conexo()
+    # grafo_random.plot_grau_hist()
 
 
 if __name__ == '__main__':
