@@ -1,30 +1,34 @@
 import grafo_random as gr
+import grafo_testes
 import scc
 import copy
 import time
 import grafo_testes as gt
 
+
 def main():
-    # ----------------------------------------------------- EX 1 eu#
+    # ------------------------------------------------R----- EX 1 eu#
     # ini = time.time()
-    grafo_random = gr.Grafo_Random(100, 300, False)
+    grafo_random = gr.Grafo_Random(2000, 4000, False)
     # fin = time.time()
     # print("tempo = ", fin - ini)
     # print("numero arrestas = ", grafo_random.grafo.numero_arrestas())
     # print("numero vertices = ", grafo_random.grafo.numero_vertices())
-    # ----------------------------------------------------- EX 2 #
+    # ----------------------------------------------------- EX 2g #
     # grafo_random.pajek()
     # ----------------------------------------------------- EX 3 eu#
     # new_grafo = grafo_random.lerpajek()
     # new_grafo.imprime_lista_adjacencias()
     # ----------------------------------------------------- EX 4 eu#
-    # print(grafo_random.numero_comp_ndirecionado())
-    # ----------------------------------------------------- EX 5 eu#
-    # grafo1 = gt.grafo_teste1()
-    # scc1 = scc.SCC(grafo1)
-    # scc1.printSCCs()
-    # scc1 = scc.SCC(grafo_random.grafo)
-    # scc1.printSCCs()
+    grafo_te = grafo_testes.grafo_teste2()
+    print(grafo_random.numero_comp_ndirecionado(grafo_te))
+    print(grafo_random.numero_comp_ndirecionado())
+    # ----------------------------------------------------- EX 5 eU#
+    #grafo1 = gt.grafo_teste1()
+    #scc1 = scc.SCC(grafo1)
+    #scc1.printSCCs()
+    #scc1 = scc.SCC(grafo_random.grafo)
+    #scc1.printSCCs()
     # ----------------------------------------------------- EX 6 #
     # grafo_random_copy = copy.deepcopy(grafo_random)
     # grafo_random_copy.dag()

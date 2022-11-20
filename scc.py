@@ -56,9 +56,11 @@ class SCC:
 
         gf = self.transpor_grafo()
         visited = self.criar_dicionario_vistados()
-
+        acc = 0
         while stack:
             i = stack.pop()
             if visited[i] == False:
+                acc += 1
                 self.DFSUtil(i, visited, gf.grafo)
                 print("")
+        print("Numero de componentes : ",acc)

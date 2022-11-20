@@ -28,16 +28,16 @@ class Grafo_Random:
         return matrix
 
     def matrix_para_grafo_ndirecinado(self, n_vertices, n_arestas):
-        matrix = self.gerar_matrix_random(n_vertices, n_arestas * 2)
+        matrix = self.gerar_matrix_random(n_vertices, n_arestas * 2)  # duas vezes mais por ser ndirecional
 
-        for i in range(len(matrix)):
+        for i in range(len(matrix)):  # 0 ao numero de vertices
             self.grafo.adiciona_vertice(i)
 
-        for v1 in range(len(matrix)):
+        for v1 in range(len(matrix)): # triangulo
             for v2 in range(v1):
                 if matrix[v1][v2] == 1:
                     w = np.random.randint(100)
-                    self.grafo.adiciona_aresta(v1, v2, w)
+                    self.grafo.adiciona_aresta(v1, v2, w) # duas vezes mais por ser ndirecional
                     self.grafo.adiciona_aresta(v2, v1, w)
 
     def matrix_para_grafo_direcinado(self, n_vertices, n_arestas):
@@ -173,37 +173,55 @@ class Grafo_Random:
         plt.xlabel("Grau")
         return plt.show()
 
-    def numero_comp_ndirecionado(self):
-        if self.direcionado == False:
-            vertices = self.grafo.nome_vertice()
-            visitados = []
-            acc = 0
-            for i in vertices:
-                cond = True
-                for i1 in self.grafo.busca_largura(i):
-                    if i1 in visitados:
-                        cond = False
-                    else:
-                        visitados.append(i1)
-                if cond == True:
-                    acc += 1
-            return acc
+    def numero_comp_ndirecionado(self, grafo=None):
+        if grafo:
+            if self.direcionado == False:
+                vertices = grafo.nome_vertice()
+                visitados = []
+                acc = 0
+                for i in vertices:
+                    cond = True
+                    for i1 in grafo.busca_largura(i):
+                        if i1 in visitados:
+                            cond = False
+                        else:
+                            visitados.append(i1)
+                    if cond == True:
+                        acc += 1
+                return acc
+            else:
+                return "Precisa ser não direcional"
         else:
-            return "Precisa ser não direcional"
+            if self.direcionado == False:
+                vertices = self.grafo.nome_vertice()
+                visitados = []
+                acc = 0
+                for i in vertices:
+                    cond = True
+                    for i1 in self.grafo.busca_largura(i):
+                        if i1 in visitados:
+                            cond = False
+                        else:
+                            visitados.append(i1)
+                    if cond == True:
+                        acc += 1
+                return acc
+            else:
+                return "Precisa ser não direcional"
 
     def arvore_minima_ndirecionado(self):
-        if self.numero_comp_ndirecionado() == 1:
-            grafo1 = gf.GRAFO(False)
-            lista_caminho = self.grafo.busca_profundidade(0)
-            for i in lista_caminho:
-                grafo1.adiciona_vertice(i)
-            for i in range(len(lista_caminho)-1):
-                grafo1.adiciona_aresta(lista_caminho[i], lista_caminho[i+1], 0)
-                grafo1.adiciona_aresta(lista_caminho[i + 1], lista_caminho[i], 0)
-            self.grafo = grafo1
-        else:
-            print("Grafo não é conexo ou direcional")
-            return
+        #if self.numero_comp_ndirecionado() == 1:
+        grafo1 = gf.GRAFO(False)
+        lista_caminho = self.grafo.busca_profundidade(0)
+        for i in lista_caminho:
+            grafo1.adiciona_vertice(i)
+        for i in range(len(lista_caminho)-1):
+            grafo1.adiciona_aresta(lista_caminho[i], lista_caminho[i+1], 0)
+            grafo1.adiciona_aresta(lista_caminho[i + 1], lista_caminho[i], 0)
+        self.grafo = grafo1
+        #else:
+        #    print("Grafo não é conexo ou direcional")
+        #    return
 
     def imprime_lista_adjacencias(self):
         aresta = ""
