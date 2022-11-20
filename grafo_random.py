@@ -20,6 +20,10 @@ class Grafo_Random:
         for i in range(self.n_ver):
             dic_nomes[i] = random.choice(nomes)
         self.dic_nomes = dic_nomes
+       
+    def centralidade(self):
+        vari = self.grafo.centralidade_de_proximidade()
+        return self.dic_nomes[vari[1]]
 
     def gerar_matrix_random(self, n_vertices, n_arestas):
         p1 = n_arestas / (n_vertices ** 2 * 1.001)
@@ -77,7 +81,7 @@ class Grafo_Random:
                     self.grafo.adiciona_aresta(valor[0], chave, peso)
         print(self.grafo.imprime_lista_adjacencias())
 
-    def Kahn_Algorithm(self):
+        def Kahn_Algorithm(self):
         if self.direcionado:
             lista = []
             total = list(self.grafo.grafo.keys())
@@ -101,13 +105,15 @@ class Grafo_Random:
             if len(sorted_list) != len(grau_zerado):
                 return True
             else:
-                return print(sorted_list)
+                return print([self.dic_nomes[i] for i in sorted_list])
         else:
             return print("grafo não é direcionado")
 
     def dag(self):
         while self.Kahn_Algorithm():
             self.grafo.remove_aresta_vertice(random.choice(self.grafo.maior_grau()))
+            print(self.grafo.numero_vertices())
+            print(self.grafo.numero_arrestas())
 
     def pajek(self):
         grafoDotNet = open("grafo.net", "w")
@@ -150,16 +156,6 @@ class Grafo_Random:
             acc += 1
         txt.close()
         return new_grafo
-
-    def transformador_conexo(self):
-        if self.direcionado:
-            print("grafo é direcionado")
-        else:
-            for vertice in self.grafo.grafo:
-                while self.grafo.grau(vertice) == 0:
-                    self.grafo.adiciona_aresta_n_direcionado(vertice,
-                                                             random.choice(self.grafo.nome_vertice()),
-                                                             random.randint(0, 100))
 
     def plot_grau_hist(self):
         plt.hist(self.grafo.list_grau())
@@ -231,3 +227,20 @@ class Grafo_Random:
             print(f"{self.dic_nomes[key]} : {aresta}")
             aresta = ""
 
+    def transformador_conexo(self):
+        if self.direcionado:
+            return "grafo é direcionado"
+        else:
+            visitados = []
+            pilha = []
+            for vertice in self.grafo.grafo:
+                pilha.append(vertice)
+                while pilha:
+                    s = pilha.pop()
+                    if s not in visitados:
+                        visitados.append(s)
+                        for x in self.grafo.grafo[s][::-1]:
+                            if x[0] not in visitados:
+                                pilha.append(x[0])
+                                self.grafo.adiciona_aresta_n_direcionado(x[0], random.choice(visitados), random.randint(1, 100))
+            return visitados
