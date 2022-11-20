@@ -1,5 +1,4 @@
 import math
-import random
 
 class GRAFO:
     def __init__(self, direcionado):
@@ -113,7 +112,7 @@ class GRAFO:
         for vertice in self.grafo:
             numero_de_vertices = self.grau(vertice)
             listagraumax.append([numero_de_vertices, vertice])
-        return [i[1] for i in sorted(listagraumax, key=lambda x: x[0], reverse=True)[:1]]
+        return [i[1] for i in sorted(listagraumax, key=lambda x: x[0], reverse=True)[:5]]
 
     def list_grau(self):
         lista = []
@@ -256,3 +255,42 @@ class GRAFO:
                         fila.append(x[0])
             del fila[0]
         return visitados
+
+    def Dijkstra_clear_aresta(self, start):
+        lista = []
+        for value in self.grafo.values():
+            for i in value:
+                lista.append(i)
+        dic_ = {key: math.inf for key in dict(lista) if key != start}
+        dic_[start] = 0
+        visited = [start]
+        acc = 0
+        direcion = []
+        while len(visited) != acc or acc == 0:
+            for key, value in self.grafo[visited[acc]]:
+                if key in visited:
+                    continue
+                new_distance = value + dic_[visited[acc]]
+                if dic_[key] > new_distance:
+                    direcion.append([visited[acc], key])
+                    dic_[key] = new_distance
+                visited.append(key)
+            acc += 1
+        return dic_
+
+    def centralidade_de_proximidade(self):
+        numero = self.numero_vertices()
+        lista_resultado = []
+        for vertice in self.grafo:
+            caminhos = self.Dijkstra_clear_aresta(vertice)
+            for key, value in caminhos.items():
+                if value == math.inf:
+                    caminhos[key] = 0
+            soma = sum(caminhos.values())
+            if soma == 0:
+                resultado = 0
+                lista_resultado.append(resultado)
+            else:
+                resultado = (numero - 1) / soma
+                lista_resultado.append([resultado, vertice])
+        return max(lista_resultado)
